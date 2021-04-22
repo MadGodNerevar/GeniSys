@@ -79,6 +79,7 @@ $Password = Read-Host "Enter a Password for Term if Necessary"
 #$Username = $env:UserName
 $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
 
+#This was part of an orginal .bat file that i remade in powershell, the idea is to force a login of a user from the domain
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultUsername" -Value "$Username" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultDomain" -Value "$UserDomain" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultDomainName" -Value "$UserDomain" -PropertyType "String" -Force
