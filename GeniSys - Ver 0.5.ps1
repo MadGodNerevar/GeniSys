@@ -74,7 +74,7 @@ Add-Computer -DomainName $UserDomain -Credential $DomainAdmin -Force
 #Adds the Domain user to the Local administrator Goup
 Add-LocalGroupMember -Group "Administrators" -Member "$UserDomain\Term"
 
-#
+#Asks for username and gives full path fo HKLM
 $Password = Read-Host "Enter a Password for Term if Necessary"
 #$Username = $env:UserName
 $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
