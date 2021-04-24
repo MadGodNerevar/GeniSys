@@ -54,6 +54,7 @@ else {
 
 # Code for elevation pop here
 
+#Need to turn this into an if/else statement and to ask if its required in the first place
 #Asks for the IP address accociated with DNS and sets the DNS to that address
 $DNS = Read-Host "Enter DNS Address"
 Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' , 'Ethernet 0' , 'Ethernet 1' , 'Ethernet 2' , 'Ethernet 3' , 'Ethernet 4' -ServerAddresses ("$DNS")
@@ -65,6 +66,7 @@ Clear-DnsClientCache
 $UserDomain = Read-Host "Enter Domain"
 $DomainAdmin = Read-Host "Enter Domain Admin"
 $Server = Read-Host "Enter Server Name"
+
 #you can set this as as a variable or just have a simple user - more on this later
 $Username = 'Term'
 
@@ -76,10 +78,10 @@ Add-LocalGroupMember -Group "Administrators" -Member "$UserDomain\Term"
 
 #Asks for username and gives full path fo HKLM
 $Password = Read-Host "Enter a Password for Term if Necessary"
-#$Username = $env:UserName
+#$Username = $env:UserName #think this is only useful if you want the current signed in user to be the one that is used
 $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
 
-#This was part of an orginal .bat file that i remade in powershell, the idea is to force a login of a user from the domain
+#This was part of an orginal .bat file that i recreated in powershell, the idea is to force a login of a user from the domain
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultUsername" -Value "$Username" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultDomain" -Value "$UserDomain" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultDomainName" -Value "$UserDomain" -PropertyType "String" -Force
@@ -90,7 +92,17 @@ $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
  New-ItemProperty -Path "$RegKeyPath" -Name "DisableCAD" -Value "1" -PropertyType "String" -Force
 
 #This copies any item from the server folder path back to the local PC and should create the path required to store these items
-Copy-Item "\\$Server\Quadranet\Quadranet\EposV5\App\EposV5\" -Destination "C:\Quadranet\" -Recurse  
+Copy-Item "\\$Server\Quadranet\Quadranet\EposV5\App\EposV5\" -Destination "C:\Quadranet\" -Recurse -Force
+
+#Get path to removeable drive and software folder
+
+#Install TeamViewer
+
+#Select and install Printer Driver then rename
+
+Rename-Printer -Name "$printername" -NewName "Local"
+
+#Select and Install OPOS Driver
 
 #I mean self explanatory it restarts the PC
 Restart-Computer
