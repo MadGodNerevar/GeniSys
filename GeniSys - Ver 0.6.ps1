@@ -1,6 +1,6 @@
 ﻿mode 300
 
-Echo '
+Write-Output '
  0000000000000000   000000000000000     0000        00    000000000000000    00000000000000   00          00    00000000000000
 00000000000000000  00000000000000000  0000000       000  00000000000000000  0000000000000000  000         000  0000000000000000
 000                000                000  000      000         000         000                000       000   000
@@ -68,7 +68,7 @@ if ($useranswer -eq "y", "Y", "Yes") {
 }
 else {
 
-     Write-Out "Carrying on With Install"
+     Write-Output "Carrying on With Install"
 }
 
 #Asks for user input to enter in the Domain name, Domain Admin and the name of the server
