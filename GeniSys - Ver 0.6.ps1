@@ -61,7 +61,7 @@ if ($useranswer -eq "y", "Y", "Yes") {
 
     #Asks for the IP address accociated with DNS and sets the DNS to that address
     $DNS = Read-Host "Enter DNS Address"
-    Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' , 'Ethernet 0' , 'Ethernet 1' , 'Ethernet 2' , 'Ethernet 3' , 'Ethernet 4' -ServerAddresses ("$DNS") -      ErrorAction SilentlyContinue
+    Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' , 'Ethernet 0' , 'Ethernet 1' , 'Ethernet 2' , 'Ethernet 3' , 'Ethernet 4' -ServerAddresses ("$DNS") -ErrorAction SilentlyContinue
 
      #Clears the Cache 
      Clear-DnsClientCache
