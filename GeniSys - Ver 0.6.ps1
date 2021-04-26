@@ -54,44 +54,42 @@ else {
 
 # Code for elevation pop here
 
-#Need to turn this into an if/else statement and to ask if its required in the first place
+# Need to turn this into an if/else statement and to ask if its required in the first place
 $useranswer = Read-Host "Do You Need to Enter DNS Address"
 
-if ($useranswer -eq "y", "Y", "Yes") {
+if ("YES", "Yes", "yes", "Y", "y" -eq $useranswer) {
 
-    #Asks for the IP address accociated with DNS and sets the DNS to that address
+    # Asks for the IP address accociated with DNS and sets the DNS to that address
     $DNS = Read-Host "Enter DNS Address"
     Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' , 'Ethernet 0' , 'Ethernet 1' , 'Ethernet 2' , 'Ethernet 3' , 'Ethernet 4' -ServerAddresses ("$DNS") -ErrorAction SilentlyContinue
-
-     #Clears the Cache 
-     Clear-DnsClientCache
+    # Clears the Cache 
+    Clear-DnsClientCache
 }
-else {
-
-     Write-Output "Carrying on With Install"
+elseif ("NO", "No", "no", "N", "n" -eq $useranswer) {
+    Write-Output "Carrying on With Install"
 }
 
-#Asks for user input to enter in the Domain name, Domain Admin and the name of the server
+# Asks for user input to enter in the Domain name, Domain Admin and the name of the server
 $UserDomain = Read-Host "Enter Domain"
 $DomainAdmin = Read-Host "Enter Domain Admin"
 $Server = Read-Host "Enter Server Name"
 
-#you can set this as as a variable or just have a simple user
+# You can set this as as a variable or just have a simple user
 $Username = 'Term'
 
-#I mean this just adds the computer to the domain using the credentials popped in by user input 
+# I mean this just adds the computer to the domain using the credentials popped in by user input 
 Add-Computer -DomainName $UserDomain -Credential $DomainAdmin -Force
 
-#Adds the Domain user to the Local administrator Goup
+# Adds the Domain user to the Local administrator Goup
 Add-LocalGroupMember -Group "Administrators" -Member "$UserDomain\Term"
 
-#Asks for username and gives full path fo HKLM
+# Asks for username and gives full path fo HKLM
 $Password = Read-Host "Enter a Password for Term if Necessary"
 
-#$Username = $env:UserName #think this is only useful if you want the current signed in user to be the one that is used
+# $Username = $env:UserName #think this is only useful if you want the current signed in user to be the one that is used
 $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
 
-#This was part of an orginal .bat file that i recreated in powershell, the idea is to force a login of a user from the domain
+# This was part of an orginal .bat file that i recreated in powershell, the idea is to force a login of a user from the domain
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultUsername" -Value "$Username" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultDomain" -Value "$UserDomain" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultDomainName" -Value "$UserDomain" -PropertyType "String" -Force
@@ -101,18 +99,25 @@ $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
  New-ItemProperty -Path "$RegKeyPath" -Name "DefaultPassword" -Value "$Password" -PropertyType "String" -Force
  New-ItemProperty -Path "$RegKeyPath" -Name "DisableCAD" -Value "1" -PropertyType "String" -Force
 
-#This copies any item from the server folder path back to the local PC and should create the path required to store these items
+# This copies any item from the server folder path back to the local PC and should create the path required to store these items
 Copy-Item "\\$Server\Quadranet\Quadranet\EposV5\App\EposV5\" -Destination "C:\Quadranet\" -Recurse -Force
 
-#Get path to removeable drive and software folder
+# Get path to removeable drive and software folder
+$genisys = (get-volume | where drivetype -eq removable).driveletter
+$new = $genisys + ":"
+$TV = "TeamViewer.exe"
+$SP-1030 = ""
+SP-1060 = ""
+$Audrey = "Audrey_OPOS_Driver.exe"
 
-#Install TeamViewer
-Start-Process -FilePath "TeamViewer.exe"
+# Install TeamViewer
+Start-Process "$new\RequiredSoftware\TeamViewer.exe" -UseNewEnvironment
 
 Start-Sleep -Seconds 20
 
-#Select and install Printer Driver then rename
-#need to find a way to list the printers then take user input and pass to if else statements
+# Select and install Printer Driver then rename
+# Need to find a way to list the printers then take user input and pass to if else statements
+Start-Process "$new\Creation Kit\TeamViewer.exe" -UseNewEnvironment
 
 $selectedprinter = $selecteddriver
 if ($selectedprinter -eq "RP-320") {
@@ -137,7 +142,7 @@ Start-Sleep -Seconds 60 #curious to see if i can make this wait for printer inst
 
 Rename-Printer -Name "$printername" -NewName "Local"
 
-#Select and Install OPOS Driver this will need to vary based upon the terminal
+# Select and Install OPOS Driver this will need to vary based upon the terminal
 if ($OPOSDriver -eq "need to get drivers" "SP-1030") {
 
     Start-Process -FilePath "Driver.exe" 
@@ -156,5 +161,5 @@ elseif ($OPOSDriver -eq "need to get drivers" "Audrey") {
 
 Start-Sleep -Seconds 20
 
-#I mean self explanatory it restarts the PC
+# I mean self explanatory it restarts the PC
 Restart-Computer
