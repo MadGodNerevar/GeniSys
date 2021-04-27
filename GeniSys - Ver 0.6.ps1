@@ -65,7 +65,8 @@ if ("YES", "Yes", "yes", "Y", "y" -eq $useranswer) {
     # Clears the Cache 
     Clear-DnsClientCache
 }
-else ("NO", "No", "no", "N", "n" -eq $useranswer) {
+elseif ("NO", "No", "no", "N", "n" -eq $useranswer) {
+
     Write-Output "Carrying on With Install"
 }
 
@@ -78,11 +79,13 @@ $Server = Read-Host "Enter Server Name"
 $Term = Read-Host "Is Term default user?"
 
 if ("YES", "Yes", "yes", "Y", "y" -eq $Term) {
-  Write-Output "Term will be added as Default User in Registry"
-  $User = "Term"
+
+    Write-Output "Term will be added as Default User in Registry"
+    $User = "Term"
 }
 elseif ("NO", "No", "no", "N", "n" -eq $Term) {
-  $User = Read-Host "Enter User Name"
+
+    $User = Read-Host "Enter User Name"
 }
 
 # I mean this just adds the computer to the domain using the credentials popped in by user input 
@@ -92,7 +95,7 @@ Add-Computer -DomainName $UserDomain -Credential $DomainAdmin -Force
 Add-LocalGroupMember -Group "Administrators" -Member "$UserDomain\Term"
 
 # Asks for username and gives full path fo HKLM
-$Password = Read-Host "Enter a Password for Term if Necessary"
+$Password = Read-Host "Enter a Password for User if Necessary"
 
 # $Username = $env:UserName #think this is only useful if you want the current signed in user to be the one that is used
 $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\winlogon"
@@ -112,20 +115,20 @@ Copy-Item "\\$Server\Quadranet\Quadranet\EposV5\App\EposV5\" -Destination "C:\Qu
 
 # Get path to removeable drive and software folder
 $genisys = (get-volume | where drivetype -eq removable).driveletter
-$new = $genisys + ":"
+$USBDrive = $genisys + ":"
 $TV = "TeamViewer.exe"
 $SP-1030 = ""
 SP-1060 = ""
 $Audrey = "Audrey_OPOS_Driver.exe"
 
 # Install TeamViewer
-Start-Process "$new\RequiredSoftware\TeamViewer.exe" -UseNewEnvironment
+Start-Process "$USBDrive\RequiredSoftware\TeamViewer.exe" -UseNewEnvironment
 
 Start-Sleep -Seconds 20
 
 # Select and install Printer Driver then rename
 # Need to find a way to list the printers then take user input and pass to if else statements
-Start-Process "$new\Creation Kit\TeamViewer.exe" -UseNewEnvironment
+Start-Process "$USBDrive\Creation Kit\TeamViewer.exe" -UseNewEnvironment
 
 $selectedprinter = $selecteddriver
 if ($selectedprinter -eq "RP-320") {
