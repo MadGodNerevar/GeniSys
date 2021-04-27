@@ -1,4 +1,4 @@
-﻿mode 300
+mode 300
 
 Write-Output '
  0000000000000000   000000000000000     0000        00    000000000000000    00000000000000   00          00    00000000000000
@@ -65,7 +65,7 @@ if ("YES", "Yes", "yes", "Y", "y" -eq $useranswer) {
     # Clears the Cache 
     Clear-DnsClientCache
 }
-elseif ("NO", "No", "no", "N", "n" -eq $useranswer) {
+else ("NO", "No", "no", "N", "n" -eq $useranswer) {
     Write-Output "Carrying on With Install"
 }
 
@@ -74,8 +74,16 @@ $UserDomain = Read-Host "Enter Domain"
 $DomainAdmin = Read-Host "Enter Domain Admin"
 $Server = Read-Host "Enter Server Name"
 
-# You can set this as as a variable or just have a simple user
-$Username = 'Term'
+# Asks and sets the user to term or allows for input for different user name
+$Term = Read-Host "Is Term default user?"
+
+if ("YES", "Yes", "yes", "Y", "y" -eq $Term) {
+  Write-Output "Term will be added as Default User in Registry"
+  $User = "Term"
+}
+elseif ("NO", "No", "no", "N", "n" -eq $Term) {
+  $User = Read-Host "Enter User Name"
+}
 
 # I mean this just adds the computer to the domain using the credentials popped in by user input 
 Add-Computer -DomainName $UserDomain -Credential $DomainAdmin -Force
