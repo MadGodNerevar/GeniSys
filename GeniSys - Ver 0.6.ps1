@@ -27,12 +27,13 @@ $myWindowsPrincipal = New-Object System.Security.Principal.WindowsPrincipal($myW
 $adminRole = [System.Security.Principal.WindowsBuiltInRole]::Administrator;
 
 # Check to see if we are currently running as an administrator
-if ($myWindowsPrincipal.IsInRole($adminRole))
-{
+if ($myWindowsPrincipal.IsInRole($adminRole)) {
+
     # We are running as an administrator, so change the title and background colour to indicate this
     $Host.UI.RawUI.WindowTitle = $myInvocation.MyCommand.Definition + "(Elevated)";
     $Host.UI.RawUI.BackgroundColor = "DarkBlue";
     Clear-Host;
+
 }
 else {
     
@@ -50,6 +51,7 @@ else {
 
     # Exit from the current, unelevated, process
     Exit;
+    
 }
 
 # Code for elevation pop here
@@ -64,10 +66,12 @@ if ("YES", "Yes", "yes", "Y", "y" -eq $useranswer) {
     Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' , 'Ethernet 0' , 'Ethernet 1' , 'Ethernet 2' , 'Ethernet 3' , 'Ethernet 4' -ServerAddresses ("$DNS") -ErrorAction SilentlyContinue
     # Clears the Cache 
     Clear-DnsClientCache
+    
 }
 elseif ("NO", "No", "no", "N", "n" -eq $useranswer) {
 
     Write-Output "Carrying on With Install"
+    
 }
 
 # Asks for user input to enter in the Domain name, Domain Admin and the name of the server
@@ -82,10 +86,12 @@ if ("YES", "Yes", "yes", "Y", "y" -eq $Term) {
 
     Write-Output "Term will be added as Default User in Registry"
     $User = "Term"
+    
 }
 elseif ("NO", "No", "no", "N", "n" -eq $Term) {
 
     $User = Read-Host "Enter User Name"
+    
 }
 
 # I mean this just adds the computer to the domain using the credentials popped in by user input 
@@ -135,16 +141,19 @@ if ($selectedprinter -eq "RP-320") {
 
     Start-Process -FilePath "Driver.exe" 
     Write-Output "$selectedprinter will be renamed."
+    
 }
 elseif ($selectedprinter -eq "RP-600") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$selectedprinter will be renamed."
+    
 }
 elseif ($selectedprinter -eq "RP-700") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$selectedprinter will be renamed."
+    
 }
 
 $printername = $selectedprinter
@@ -158,16 +167,19 @@ if ($OPOSDriver -eq "need to get drivers" "SP-1030") {
 
     Start-Process -FilePath "Driver.exe" 
     Write-Output "$OPOSDriver will need to be set to ".
+    
 }
 elseif ($OPOSDriver -eq "need to get drivers" "SP-1060") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$OPOSDriver will need to be set to ".
+    
 }
 elseif ($OPOSDriver -eq "need to get drivers" "Audrey") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$OPOSDriver will need to be set to KS-A".
+    
 }
 
 Start-Sleep -Seconds 20
