@@ -15,7 +15,7 @@ Write-Output '
 ####################################################################################################################################
 ####################################################################################################################################'
 
-Echo ('Welcome to GeniSys, Installer Kit')
+Write-Output ('Welcome to GeniSys, Installer Kit')
 
 Start-Sleep -Seconds 2
 
@@ -56,7 +56,7 @@ else {
 
 # Code for elevation pop here
 
-# Need to turn this into an if/else statement and to ask if its required in the first place
+# asks if DNS is required in the first place
 $useranswer = Read-Host "Do You Need to Enter DNS Address"
 
 if ("YES", "Yes", "yes", "Y", "y" -eq $useranswer) {
