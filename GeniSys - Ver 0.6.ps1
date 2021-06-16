@@ -125,7 +125,7 @@ $USBDrive = $genisys + ":"
 $TV = "TeamViewer.exe"
 $SP-1030 = ""
 SP-1060 = ""
-$Audrey = "Audrey_OPOS_Driver.exe"
+$Audrey = "Audrey_OPOS_Driver_0098.00.exe"
 
 # Install TeamViewer
 Start-Process "$USBDrive\RequiredSoftware\TeamViewer.exe" -UseNewEnvironment
