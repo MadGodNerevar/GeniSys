@@ -38,6 +38,6 @@ This PowerShell Script runs a few things:
 
 4) The installation continues with installing the QuadraNet Systems TeamViewer Host that is necessary for continued support. - Not Curretnly Featured
 
-5) Finally GeneSys adds the famous AutoLogin Script to it, which means that most of the setup is as Automated as possible. 
+5) Finally GeniSys adds the famous AutoLogin Script to it, which means that most of the setup is as Automated as possible. 
 
 GeniSys is a work in progress and will be improved as time passes, i am hoping to Automate as many of the processes as possible to provide swift resolutions and installs.
