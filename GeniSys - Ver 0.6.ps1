@@ -33,10 +33,8 @@ if ($myWindowsPrincipal.IsInRole($adminRole)) {
     $Host.UI.RawUI.WindowTitle = $myInvocation.MyCommand.Definition + "(Elevated)";
     $Host.UI.RawUI.BackgroundColor = "DarkBlue";
     Clear-Host;
-
 }
 else {
-    
     # Create a new process object that starts PowerShell
     $newProcess = New-Object System.Diagnostics.ProcessStartInfo "PowerShell";
 
@@ -50,11 +48,14 @@ else {
     [System.Diagnostics.Process]::Start($newProcess);
 
     # Exit from the current, unelevated, process
-    Exit;
-    
+    Exit; 
 }
 
 # Code for elevation pop here
+
+# Rename the local machine to Serial Number
+$renameterminal = Read-Host "Please Enter Serial Number for the Terminal"
+Rename-Computer -NewName "$renameterminal"
 
 # asks if DNS is required in the first place
 $useranswer = Read-Host "Do You Need to Enter DNS Address"
@@ -65,13 +66,11 @@ if ("YES", "Yes", "yes", "Y", "y" -eq $useranswer) {
     $DNS = Read-Host "Enter DNS Address"
     Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' , 'Ethernet 0' , 'Ethernet 1' , 'Ethernet 2' , 'Ethernet 3' , 'Ethernet 4' -ServerAddresses ("$DNS") -ErrorAction SilentlyContinue
     # Clears the Cache 
-    Clear-DnsClientCache
-    
+    Clear-DnsClientCache 
 }
 elseif ("NO", "No", "no", "N", "n" -eq $useranswer) {
 
-    Write-Output "Carrying on With Install"
-    
+    Write-Output "Carrying on With Install" 
 }
 
 # Asks for user input to enter in the Domain name, Domain Admin and the name of the server
@@ -85,13 +84,11 @@ $Term = Read-Host "Is Term default user?"
 if ("YES", "Yes", "yes", "Y", "y" -eq $Term) {
 
     Write-Output "Term will be added as Default User in Registry"
-    $User = "Term"
-    
+    $User = "Term" 
 }
 elseif ("NO", "No", "no", "N", "n" -eq $Term) {
 
     $User = Read-Host "Enter User Name"
-    
 }
 
 # I mean this just adds the computer to the domain using the credentials popped in by user input 
@@ -123,12 +120,12 @@ Copy-Item "\\$Server\Quadranet\Quadranet\EposV5\App\EposV5\" -Destination "C:\Qu
 $genisys = (get-volume | where drivetype -eq removable).driveletter
 $USBDrive = $genisys + ":"
 $TV = "TeamViewer.exe"
-$SP-1030 = ""
-SP-1060 = ""
+#$SP-1030 = ""
+#$SP-1060 = ""
 $Audrey = "Audrey_OPOS_Driver_0098.00.exe"
 
 # Install TeamViewer
-Start-Process "$USBDrive\RequiredSoftware\TeamViewer.exe" -UseNewEnvironment
+cmd.exe /c "$USBDrive\RequiredSoftware\TeamViewer\InstallAssign.bat"
 
 Start-Sleep -Seconds 20
 
@@ -141,19 +138,16 @@ if ($selectedprinter -eq "RP-320") {
 
     Start-Process -FilePath "Driver.exe" 
     Write-Output "$selectedprinter will be renamed."
-    
 }
 elseif ($selectedprinter -eq "RP-600") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$selectedprinter will be renamed."
-    
 }
 elseif ($selectedprinter -eq "RP-700") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$selectedprinter will be renamed."
-    
 }
 
 $printername = $selectedprinter
@@ -166,20 +160,17 @@ Rename-Printer -Name "$printername" -NewName "Local"
 if ($OPOSDriver -eq "need to get drivers" "SP-1030") {
 
     Start-Process -FilePath "Driver.exe" 
-    Write-Output "$OPOSDriver will need to be set to ".
-    
+    Write-Output "$OPOSDriver will need to be set to ". 
 }
 elseif ($OPOSDriver -eq "need to get drivers" "SP-1060") {
 
     Start-Process -FilePath "Driver.exe"
-    Write-Output "$OPOSDriver will need to be set to ".
-    
+    Write-Output "$OPOSDriver will need to be set to ". 
 }
 elseif ($OPOSDriver -eq "need to get drivers" "Audrey") {
 
     Start-Process -FilePath "Driver.exe"
     Write-Output "$OPOSDriver will need to be set to KS-A".
-    
 }
 
 Start-Sleep -Seconds 20
